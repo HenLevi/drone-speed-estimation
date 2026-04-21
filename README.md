@@ -133,3 +133,13 @@ The graphs show the estimated speed over time using both methods, highlighting d
 ### Average Speed
 - **LK:** **10.77 m/s**  
 - **ORB:** **9.64 m/s**  
+
+
+---
+
+## ⚠️ Limitations
+
+- Uses a fixed pixel-to-meter scale (approximation, not calibrated)
+- Assumes planar ground (no depth estimation)
+- Sensitive to camera rotation and fast motion
+- Tracking may fail in low-texture regions
