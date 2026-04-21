@@ -1,32 +1,36 @@
-# Drone Speed Estimation
+# 🚁 Drone Speed Estimation – from Monocular Video
 
-This project estimates a drone’s horizontal speed from video using visual motion between frames.
+## 📌 Abstract
 
-## Approach
-- Read video and extract frames (`video_reader`)
-- Convert frames to grayscale  
-- Detect feature points (`feature_tracker`)
-- Estimate motion using:
-  - Lucas-Kanade Optical Flow (`optical_flow`)
-  - ORB Feature Matching (`orb_motion`)
-- Compute displacement (`pixel_to_world`)
-- Convert pixel movement to meters (using a scaling factor)
-- Compute speed in meters per second (`speed_estimator`)
-- Run the full pipeline (`estimation_pipeline`)
+This project estimates a drone’s horizontal speed over time from a monocular video using classical computer vision techniques.
 
-## Output
-A CSV file (`data/output/speed_results.csv`) containing:
-- Frame index  
-- Time (seconds)  
-- Speed (LK & ORB)  
-- Notes (e.g., tracking loss)  
-- Summary (final and average speeds)
+The system computes inter-frame motion using two approaches:
 
-## Setup
+- Lucas–Kanade Optical Flow (LK)
+- ORB Feature Matching
 
-Create a virtual environment and install dependencies:
+Pixel displacement is converted into real-world speed using a fixed scaling factor.
 
-```bash
-python -m venv venv
-venv\Scripts\activate
-pip install -r requirements.txt
+---
+
+## 🖼️ Input Visualization
+
+### Original Frame (mid-video)
+![Original Frame](assets/frame.jpg)
+
+### Region of Interest (ROI)
+
+A central region is used to focus on stable ground motion and reduce noise from surrounding areas.
+
+![ROI Frame](assets/frame_roi.jpg)
+
+---
+
+## 🧠 Main Challenge
+
+The main challenge is converting pixel displacement into real-world speed (m/s).
+
+Since a monocular camera does not provide depth information, a fixed scale factor is used:
+
+```python
+speed = sqrt(dx**2 + dy**2) * FPS

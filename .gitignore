@@ -3,7 +3,8 @@ __pycache__/
 *.pyc
 
 data/*
-!data/sample_video.mp4
+!data/input/
+!data/input/drone_video.mp4
 !data/.gitkeep
 
 .env
