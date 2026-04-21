@@ -33,4 +33,103 @@ The main challenge is converting pixel displacement into real-world speed (m/s).
 Since a monocular camera does not provide depth information, a fixed scale factor is used:
 
 ```python
-speed = sqrt(dx**2 + dy**2) * FPS
+speed = (dx**2 + dy**2) ** 0.5 * FPS
+```
+
+Where:
+
+- `dx`, `dy` are the estimated pixel displacements between consecutive frames  
+- `pixel_to_meter = 0.05` is a fixed scaling factor used to convert pixel motion into meters  
+- `FPS` is the video frame rate  
+
+---
+
+## 🔢 Mathematical Formulation
+
+The system estimates drone speed based on inter-frame pixel displacement.
+
+
+
+
+### 1. Pixel Displacement
+
+For each frame:
+
+- Δx = horizontal movement  
+- Δy = vertical movement  
+
+We use **median displacement** for robustness:
+
+dx = median(Δx)  
+dy = median(Δy)
+
+---
+
+### 2. Convert Pixels to Meters
+
+dx_m = dx * pixel_to_meter  
+dy_m = dy * pixel_to_meter  
+
+---
+
+### 3. Distance
+
+distance (meters) = sqrt(dx_m² + dy_m²)
+
+---
+
+### 4. Speed
+
+speed (m/s) = distance * FPS
+
+This formulation assumes planar motion and a constant scale approximation.
+---
+
+## ⚙️ Pipeline Overview
+
+1. **Video Initialization**
+   - Load video using OpenCV  
+   - Convert frames to grayscale  
+   - Extract FPS  
+
+2. **Feature Detection**
+   - Detect keypoints using `goodFeaturesToTrack`  
+
+3. **Motion Estimation**
+   - Lucas–Kanade Optical Flow  
+   - ORB Feature Matching + RANSAC  
+
+4. **Displacement Estimation**
+   - Remove outliers  
+   - Use median displacement  
+
+5. **Speed Calculation**
+   - Convert motion to meters  
+   - Compute speed per frame  
+
+---
+
+## 📊 Results Preview
+
+![Results Table](assets/table_preview.png)
+
+---
+
+## 📈 Speed Curves
+
+![Speed Curves](assets/speed_curves.png)
+The graphs show the estimated speed over time using both methods, highlighting differences in stability and robustness.
+---
+
+## 📊 Summary Results
+
+- **Final Frame:** 236  
+- **Final Time:** 9.84 sec  
+
+### Final Speed
+- **LK:** **13.85 m/s**  
+- **ORB:** **11.51 m/s**  
+
+### Average Speed
+- **LK:** **10.77 m/s**  
+- **ORB:** **9.64 m/s**  
