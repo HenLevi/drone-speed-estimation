@@ -36,12 +36,12 @@ The main challenge is converting pixel displacement into real-world speed (m/s).
 Since a monocular camera does not provide depth information, a fixed scale factor is used:
 
 ```python
-speed = (dx**2 + dy**2) ** 0.5 * FPS
+speed = sqrt(dx_m² + dy_m²) * FPS
 ```
 
 Where:
 
-- `dx`, `dy` are the estimated pixel displacements between consecutive frames  
+-  dx_m, dy_m are the displacements in meters (after applying pixel_to_meter scaling)
 - `pixel_to_meter = 0.05` is a fixed scaling factor used to convert pixel motion into meters  
 - `FPS` is the video frame rate  
 
@@ -100,7 +100,7 @@ This formulation assumes planar motion and a constant scale approximation.
 
 3. **Motion Estimation**
    - Lucas–Kanade Optical Flow  
-   - ORB Feature Matching + RANSAC  
+   - ORB Feature Matching   
 
 4. **Displacement Estimation**
    - Remove outliers  
