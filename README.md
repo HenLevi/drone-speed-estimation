@@ -31,12 +31,13 @@ If preview is not available, click "View raw" to download the video.
 
 ## 🧠 Main Challenge
 
-The main challenge is converting pixel displacement into real-world speed (m/s).
+The main challenge is converting pixel displacement into approximate real-world speed (m/s).
 
 Since a monocular camera does not provide depth information, a fixed scale factor is used:
 
 ```python
-speed = sqrt(dx_m² + dy_m²) * FPS
+distance = sqrt(dx_m^2 + dy_m^2)
+speed = distance * FPS
 ```
 
 Where:
@@ -63,9 +64,10 @@ For each frame:
 
 We use **median displacement** for robustness:
 
-dx = median(Δx)  
+```python
+dx = median(Δx)
 dy = median(Δy)
-
+```
 ---
 
 ### 2. Convert Pixels to Meters
@@ -119,6 +121,8 @@ This formulation assumes planar motion and a constant scale approximation.
 ---
 
 ## 📈 Speed Curves
+
+LK shows smoother motion tracking, while ORB is more sensitive to matching noise.
 
 ![Speed Curves](assets/speed_curves.png)
 The graphs show the estimated speed over time using both methods, highlighting differences in stability and robustness.
