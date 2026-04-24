@@ -2,7 +2,7 @@
 
 ## 📌 Abstract
 
-This project estimates a drone’s horizontal speed over time from a monocular video using classical computer vision techniques.
+This project estimates approximate drone motion over time based on image-plane displacement from a monocular video using classical computer vision techniques.
 
 The system computes inter-frame motion using two approaches:
 
@@ -13,16 +13,19 @@ Pixel displacement is converted into real-world speed using a fixed scaling fact
 
 ---
 
+
+## 🎥 Sample Input Video
+A sample drone video is included in `data/input/drone_video.mp4`.
+
+If preview is not available, click "View raw" to download the video.
+
+---
+
 ## 🖼️ Input Visualization
 
 ### Original Frame (mid-video)
 ![Original Frame](assets/frame.jpg)
 
-### Region of Interest (ROI)
-
-A central region is used to focus on stable ground motion and reduce noise from surrounding areas.
-
-![ROI Frame](assets/frame_roi.jpg)
 
 ---
 
